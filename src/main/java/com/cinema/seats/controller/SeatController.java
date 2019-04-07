@@ -4,6 +4,7 @@ import com.cinema.seats.model.Seat;
 import com.cinema.seats.repository.SeatRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,9 @@ public class SeatController {
     @Autowired
     private SeatRepository seatRepository;
 
+    @Value("${seats.brandname}")
+    private String seatsBrandname;
+
     @GetMapping
     public List<Seat> findByScreenAndStartAndAvailable(
             @RequestParam final Integer screen,
@@ -32,5 +36,10 @@ public class SeatController {
         log.info(format("findByScreenAndStartAndAvailable(screen=%s, start=%s, available=%s",
                 screen, start, available));
         return seatRepository.findByScreenAndStartAndAvailable(screen, start, available);
+    }
+
+    @GetMapping("/brandname")
+    public String getSeatsBrandname() {
+        return seatsBrandname;
     }
 }
